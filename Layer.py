@@ -5,7 +5,7 @@ Created on Fri Apr 13 19:06:43 2018
 @author: Robbie Tulip
 """
 from random import random, seed
-from Node import neuron
+from Neuron import neuron
 from Errors import *
 
 
