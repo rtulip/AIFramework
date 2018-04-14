@@ -7,7 +7,7 @@ Created on Sat Apr 14 00:34:46 2018
 
 from random import random,seed
 from Errors import *
-from Layer import layer
+from Layer import layer, breed_layer
 
 class network():
     
@@ -26,7 +26,34 @@ class network():
         for l in self.__hidden_layers:
             print (l)
         print(self.__output_layer)
-
+    
+    def shape(self):
+        return self.__num_layers
+    
+    def get_layers(self):
+        return self.__hidden_layers, self.__output_layer
+    
+    def set_layers(self,new_hidden_layers,new_output_layer):
+        if len(new_hidden_layers) != len(self.__hidden_layers):
+            raise DifferentShapeError
+        
+        for i in range(len(new_hidden_layers)):
+            if self.__hidden_layers[i].shape() != new_hidden_layers[i].shape():
+                raise DifferentShapeError
+            
+            if self.__hidden_layers[i].get_neurons()[0].shape() != new_hidden_layers[i].get_neurons()[0].shape():
+                raise DifferentShapeError
+            
+            self.__hidden_layers[i] = new_hidden_layers[i]
+       
+        if self.__output_layer.shape() != new_output_layer.shape():
+                raise DifferentShapeError
+            
+        if self.__output_layer.get_neurons()[0].shape() != new_output_layer.get_neurons()[0].shape():
+            raise DifferentShapeError
+            
+        self.__output_layer = new_output_layer
+        
     def iterate(self,inputs):
         try:
             for l in self.__hidden_layers:
@@ -39,12 +66,34 @@ class network():
             return False
         else:
             return inputs
+        
+def breed_network(network1,network2):
+    
+    if network1.shape() != network2.shape():
+        raise DifferentShapeError
+    
+    hidden1, output1 = network1.get_layers()
+    hidden2, output2 = network2.get_layers()
+    
+    new_network = network(hidden1[0].get_neurons()[0].shape(),len(hidden1),hidden1[0].shape(),output1.shape())
+    new_hidden_layers,new_output_layer = new_network.get_layers()
+    
+    for i in range(len(hidden1)):
+        try:
+            new_hidden_layers[i] = breed_layer(hidden1[i],hidden2[i])
+        except Exception as e:
+            handle(e)
+    new_output_layer = breed_layer(output1,output2)
+    
+    new_network.set_layers(new_hidden_layers,new_output_layer)
+    
+    return new_network
+            
 """
 seed(101)
 
-net = network(105,2,32,8)
-print(net)
-inputs = [random() for i in range(104)]
-inputs.append(1)
-print (net.iterate(inputs))
+n1 = network(105,2,32,8)
+n2 = network(105,2,32,8)
+
+breed_network(n1,n2)
 """

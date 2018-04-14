@@ -19,5 +19,5 @@ def handle(e):
     elif type(e) == InvalidWeightError:
         print ("Input containted an invalid weight. 0 <= w <= 1")
     else:
-        print ("Unknown Error Occurred")
+        print ("Unknown Error Occurred", e)
         

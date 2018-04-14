@@ -50,30 +50,44 @@ class neuron:
     def shape(self):
         return self.__shape
     
-        
+def breed(neuron1,neuron2):
+    
+    if neuron1.shape() != neuron2.shape():
+        raise DifferentShapeError
+      
+    new_neuron = neuron(neuron1.shape())
+    new_weights = new_neuron.get_weights()
+    weights1 = neuron1.get_weights()
+    weights2 = neuron2.get_weights()
+    for i in range(neuron1.shape()):
+        random_num = random()
+        if random_num < 1/3:
+            #leave the weight the same
+            new_weights[i] = weights1[i]
+        elif random_num < 2/3:
+            #use the other weight
+            new_weights[i] = weights2[i]
+        else:
+            #use average
+            new_weights[i] = np.average([weights1[i],weights2[i]])
+    return new_neuron
+
 """
-seed(1001)
+#seed(1001)
 
-n = neuron(5)
-print (n)
-print (n.get_weights())
+n1 = neuron(5)
+print (n1.get_weights())
 
-try:
-    n.set_weights([random() for i in range(n.shape())])
-except DifferentShapeError as e:
-    print ("invalid set of weights")
-except InvalidWeightError as e:
-    print ("Invalid weights in inputs")
+n2 = neuron(5)
+print (n2.get_weights())
 
-print (n.get_weights())
-val = 0
-try:
-    val = n.calculate([random() for i in range(n.shape())])
-except DifferentShapeError as e:
-    print("Invalid Inputs: Different Shape")
-finally:
-    print (val)
- """   
+new = breed(n1,n2)
+
+print (new.get_weights()) 
+"""
+ 
+
+  
 
 
 
