@@ -68,7 +68,7 @@ class network():
             return inputs
         
 def breed_network(network1,network2):
-    
+ 
     if network1.shape() != network2.shape():
         raise DifferentShapeError
     
