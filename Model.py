@@ -6,13 +6,13 @@ Created on Sat Apr 14 10:21:28 2018
 """
 from random import sample
 import numpy as np
-from Network import network,breed_network
+from Network import network, breed_network
 
 class neuroEvolution():
     
-    def __init__(self, networks):
+    def __init__(self, networks_and_scores):
         
-        self.__networks = sorted(networks,key = lambda x:x[1],reverse = True)
+        self.__networks = sorted(networks_and_scores,key = lambda x:x[1],reverse = True)
         self.__size = len(self.__networks)
         self.__mean = (int(len(self.__networks)/2))
         
@@ -33,13 +33,7 @@ class neuroEvolution():
             pair = sample(self.__networks,2)    
             self.__networks.append(breed_network(pair[0],pair[1]))
         
-        
-            
-            
-            
-        
 """
-
 networks = []   
 for i in range(10):
     networks.append((network(5,2,3,2),i))
